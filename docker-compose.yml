@@ -1,6 +1,19 @@
 version: '3'
 
 services:
+  front:
+    image: node:16-alpine3.11
+    working_dir: /home/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - PORT=3000
+    volumes:
+      - ./front:/home/app
+    ports:
+      - 3000:3000
+    command: >
+      sh -c "npm install && npm run start"
+
   server:
     image: node:16-alpine3.11
     working_dir: /home/app
