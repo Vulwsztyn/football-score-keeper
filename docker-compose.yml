@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  front:
+    image: node:16-alpine3.11
+    working_dir: /home/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - PORT=3000
+    volumes:
+      - ./front:/home/app
+    ports:
+      - 3000:3000
+    command: >
+      sh -c "npm install && npm run start"
+
+  server:
+    image: node:16-alpine3.11
+    working_dir: /home/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - PORT=8000
+    volumes:
+      - ./server:/home/app
+    ports:
+      - 8000:8000
+    command: >
+      sh -c "npm install && npm run start"
+
+  postgres:
+    image: postgres:13.1
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - APP_DB_USER=docker
+      - APP_DB_PASS=docker
+      - APP_DB_NAME=docker
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
