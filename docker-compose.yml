@@ -43,5 +43,10 @@ services:
       - APP_DB_NAME=docker
     volumes:
       - ./db:/docker-entrypoint-initdb.d/
+      - football-score-keeper-db:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+volumes:
+    football-score-keeper-db:
+      external: false
