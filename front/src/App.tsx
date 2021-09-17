@@ -1,6 +1,12 @@
 import React from 'react'
 import logo from './logo.svg'
 import './App.css'
+import axios from 'axios'
+
+async function askServer() {
+  const res = await axios('http://localhost:8000/users')
+  console.log(res.data)
+}
 
 function App(): JSX.Element {
   return (
@@ -18,6 +24,7 @@ function App(): JSX.Element {
         >
           Learn React
         </a>
+        <button onClick={askServer}>test</button>
       </header>
     </div>
   )
