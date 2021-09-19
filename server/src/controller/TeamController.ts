@@ -42,8 +42,8 @@ export default class TeamController {
       teamGames: teamGames.map(
         ({ score, game }: { score: number; game: any }) => ({
           score,
-          opposingScore: game.teamGames[0].team.name,
-          opposingTeam: game.teamGames[0].score,
+          opposingTeam: game.teamGames[0].team.name,
+          opposingScore: game.teamGames[0].score,
         }),
       ),
     }

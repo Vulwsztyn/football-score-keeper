@@ -98,31 +98,32 @@ describe('map games for one', () => {
       teamGames: [
         {
           score: 3,
-          opposingScore: 'Mistborn',
-          opposingTeam: 5,
+          opposingTeam: 'Mistborn',
+          opposingScore: 5,
         },
         {
           score: 4,
-          opposingScore: 'Bridgemen',
-          opposingTeam: 7,
+          opposingTeam: 'Bridgemen',
+          opposingScore: 7,
         },
         {
           score: 9,
-          opposingScore: 'Ka-tet',
-          opposingTeam: 2,
+          opposingTeam: 'Ka-tet',
+          opposingScore: 2,
         },
         {
           score: 9,
-          opposingScore: 'Mistborn',
-          opposingTeam: 9,
+          opposingTeam: 'Mistborn',
+          opposingScore: 9,
         },
         {
           score: 4,
-          opposingScore: 'Bridgemen',
-          opposingTeam: 4,
+          opposingTeam: 'Bridgemen',
+          opposingScore: 4,
         },
       ],
     }
-    expect(TeamController.mapGamesForOne(input)).toBe(output)
+    const actual = TeamController.mapGamesForOne(input)
+    expect(actual).toStrictEqual(output)
   })
 })
