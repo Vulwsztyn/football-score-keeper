@@ -5,7 +5,11 @@ import { Request, Response, Express, NextFunction } from 'express'
 import { Routes } from './routes'
 import cors from 'cors'
 import { Team, Player } from './entity'
-import { TeamController, PlayerController } from './controller'
+import {
+  TeamController,
+  PlayerController,
+  TeamAndPlayerController,
+} from './controller'
 
 const options: cors.CorsOptions = {
   allowedHeaders: [
@@ -22,7 +26,7 @@ const options: cors.CorsOptions = {
 }
 
 createConnection()
-  .then(async () => {
+  .then(async (connection) => {
     const repostiories = {
       PlayerRepository: getRepository(Player),
       TeamRepository: getRepository(Team),
@@ -31,6 +35,7 @@ createConnection()
     const controllers = {
       PlayerController: new PlayerController(repostiories.PlayerRepository),
       TeamController: new TeamController(repostiories.TeamRepository),
+      TeamAndPlayerController: new TeamAndPlayerController(connection.manager),
     }
 
     const app: Express = express()
