@@ -1,7 +1,7 @@
 interface IRoute {
   method: 'get' | 'post' | 'put' | 'delete'
   route: string
-  controller: 'PlayerController' | 'TeamController'
+  controller: 'PlayerController' | 'TeamController' | 'TeamAndPlayerController'
   action: string
 }
 
@@ -47,5 +47,11 @@ export const Routes: IRoute[] = [
     route: '/teams/:id/games',
     controller: 'TeamController',
     action: 'gamesForOne',
+  },
+  {
+    method: 'get',
+    route: '/team_and_player_summary',
+    controller: 'TeamAndPlayerController',
+    action: 'all',
   },
 ]
