@@ -6,6 +6,7 @@ import { Routes } from './routes'
 import cors from 'cors'
 import { Team, Player } from './entity'
 import { TeamController, PlayerController } from './controller'
+
 const options: cors.CorsOptions = {
   allowedHeaders: [
     'Origin',
@@ -31,12 +32,11 @@ createConnection()
       PlayerController: new PlayerController(repostiories.PlayerRepository),
       TeamController: new TeamController(repostiories.TeamRepository),
     }
-    // create express app
+
     const app: Express = express()
     app.use(express.urlencoded({ extended: true }))
     app.use(cors(options))
 
-    // register express routes from defined application routes
     Routes.forEach((route) => {
       app[route.method](
         route.route,

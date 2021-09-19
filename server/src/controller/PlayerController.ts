@@ -14,7 +14,6 @@ export default class PlayerController {
   }
 
   async one(request: Request): Promise<Player | undefined> {
-    // return this.playerRepository.findOne(request.params.id)
     return this.playerRepository
       .createQueryBuilder('player')
       .leftJoinAndSelect('player.teams', 'team')
