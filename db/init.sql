@@ -21,6 +21,7 @@ CREATE TABLE team_player (
 );
 
 CREATE TABLE team_game (
+    id serial PRIMARY KEY,
     team_id INTEGER references team(id) NOT NULL,
     game_id INTEGER references game(id) NOT NULL,
     score int NOT NULL,

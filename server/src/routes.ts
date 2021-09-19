@@ -1,4 +1,5 @@
-import { UserController } from './controller/UserController'
+import { PlayerController } from './controller/PlayerController'
+import { TeamController } from './controller/TeamController'
 
 interface IRoute {
   method: 'get' | 'post' | 'put' | 'delete'
@@ -12,26 +13,20 @@ interface IRoute {
 export const Routes: IRoute[] = [
   {
     method: 'get',
-    route: '/users',
-    controller: UserController,
+    route: '/players',
+    controller: PlayerController,
     action: 'all',
   },
   {
     method: 'get',
-    route: '/users/:id',
-    controller: UserController,
+    route: '/players/:id',
+    controller: PlayerController,
     action: 'one',
   },
   {
     method: 'post',
-    route: '/users',
-    controller: UserController,
+    route: '/players',
+    controller: PlayerController,
     action: 'save',
-  },
-  {
-    method: 'delete',
-    route: '/users/:id',
-    controller: UserController,
-    action: 'remove',
   },
 ]
