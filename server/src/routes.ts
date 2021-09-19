@@ -29,4 +29,22 @@ export const Routes: IRoute[] = [
     controller: PlayerController,
     action: 'save',
   },
+  {
+    method: 'get',
+    route: '/teams',
+    controller: TeamController,
+    action: 'all',
+  },
+  {
+    method: 'get',
+    route: '/teams/:id',
+    controller: TeamController,
+    action: 'one',
+  },
+  {
+    method: 'post',
+    route: '/teams',
+    controller: TeamController,
+    action: 'save',
+  },
 ]
