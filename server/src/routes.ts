@@ -47,4 +47,10 @@ export const Routes: IRoute[] = [
     controller: TeamController,
     action: 'save',
   },
+  {
+    method: 'get',
+    route: '/teams/:id/games',
+    controller: TeamController,
+    action: 'games',
+  },
 ]
