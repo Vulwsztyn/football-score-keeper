@@ -1,37 +1,51 @@
-import { UserController } from './controller/UserController'
-
 interface IRoute {
   method: 'get' | 'post' | 'put' | 'delete'
   route: string
-  controller: {
-    new (): any
-  }
+  controller: 'PlayerController' | 'TeamController'
   action: string
 }
 
 export const Routes: IRoute[] = [
   {
     method: 'get',
-    route: '/users',
-    controller: UserController,
+    route: '/players',
+    controller: 'PlayerController',
     action: 'all',
   },
   {
     method: 'get',
-    route: '/users/:id',
-    controller: UserController,
+    route: '/players/:id',
+    controller: 'PlayerController',
     action: 'one',
   },
   {
     method: 'post',
-    route: '/users',
-    controller: UserController,
+    route: '/players',
+    controller: 'PlayerController',
     action: 'save',
   },
   {
-    method: 'delete',
-    route: '/users/:id',
-    controller: UserController,
-    action: 'remove',
+    method: 'get',
+    route: '/teams',
+    controller: 'TeamController',
+    action: 'all',
+  },
+  {
+    method: 'get',
+    route: '/teams/:id',
+    controller: 'TeamController',
+    action: 'one',
+  },
+  {
+    method: 'post',
+    route: '/teams',
+    controller: 'TeamController',
+    action: 'save',
+  },
+  {
+    method: 'get',
+    route: '/teams/:id/games',
+    controller: 'TeamController',
+    action: 'gamesForOne',
   },
 ]

@@ -1,9 +1,11 @@
 import 'reflect-metadata'
-import { createConnection } from 'typeorm'
+import { createConnection, getRepository } from 'typeorm'
 import express from 'express'
 import { Request, Response, Express, NextFunction } from 'express'
 import { Routes } from './routes'
 import cors from 'cors'
+import { Team, Player } from './entity'
+import { TeamController, PlayerController } from './controller'
 
 const options: cors.CorsOptions = {
   allowedHeaders: [
@@ -21,21 +23,26 @@ const options: cors.CorsOptions = {
 
 createConnection()
   .then(async () => {
-    // create express app
+    const repostiories = {
+      PlayerRepository: getRepository(Player),
+      TeamRepository: getRepository(Team),
+    }
+
+    const controllers = {
+      PlayerController: new PlayerController(repostiories.PlayerRepository),
+      TeamController: new TeamController(repostiories.TeamRepository),
+    }
+
     const app: Express = express()
     app.use(express.urlencoded({ extended: true }))
     app.use(cors(options))
 
-    // register express routes from defined application routes
     Routes.forEach((route) => {
       app[route.method](
         route.route,
         (req: Request, res: Response, next: NextFunction) => {
-          const result = new (route.controller as any)()[route.action](
-            req,
-            res,
-            next,
-          )
+          const controller = controllers[route.controller]
+          const result = (controller as any)[route.action](req, res, next)
           if (result instanceof Promise) {
             result.then((result) =>
               result !== null && result !== undefined
