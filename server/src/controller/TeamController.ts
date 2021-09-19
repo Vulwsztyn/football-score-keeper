@@ -1,9 +1,13 @@
-import { getRepository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { Request } from 'express'
-import { Team } from '../entity/Team'
+import Team from '../entity/Team'
 
-export class TeamController {
-  private teamRepository = getRepository(Team)
+export default class TeamController {
+  private teamRepository: Repository<Team>
+
+  constructor(teamRepository: Repository<Team>) {
+    this.teamRepository = teamRepository
+  }
 
   async all(): Promise<Team[]> {
     return this.teamRepository.find()
@@ -26,7 +30,13 @@ export class TeamController {
       .leftJoinAndSelect('teamGames.team', 'opposingTeam')
   }
 
-  mapGamesForOne({ name, teamGames }: any): any {
+  static mapGamesForOne({
+    name,
+    teamGames,
+  }: {
+    name: string
+    teamGames: any
+  }): any {
     return {
       name,
       teamGames: teamGames.map(
@@ -44,6 +54,6 @@ export class TeamController {
       'team.id = :id AND teamGames.game_id = game.id AND teamGames.team_id != team.id',
       { id: request.params.id },
     )
-    return this.mapGamesForOne(await query.getOne())
+    return TeamController.mapGamesForOne(await query.getOne())
   }
 }

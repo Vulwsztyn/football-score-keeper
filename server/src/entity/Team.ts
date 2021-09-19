@@ -5,11 +5,11 @@ import {
   Unique,
   OneToMany,
 } from 'typeorm'
-import { TeamGame } from './TeamGame'
+import TeamGame from './TeamGame'
 
 @Unique(['name'])
 @Entity({ name: 'team' })
-export class Team {
+export default class Team {
   @PrimaryGeneratedColumn()
   id: number
 

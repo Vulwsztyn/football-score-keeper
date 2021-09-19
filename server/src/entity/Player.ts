@@ -7,11 +7,11 @@ import {
   JoinTable,
 } from 'typeorm'
 
-import { Team } from './Team'
+import Team from './Team'
 
 @Unique(['name'])
 @Entity({ name: 'player' })
-export class Player {
+export default class Player {
   @PrimaryGeneratedColumn()
   id: number
 

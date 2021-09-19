@@ -5,11 +5,11 @@ import {
   PrimaryGeneratedColumn,
   JoinColumn,
 } from 'typeorm'
-import { Team } from './Team'
-import { Game } from './Game'
+import Team from './Team'
+import Game from './Game'
 
 @Entity({ name: 'team_game' })
-export class TeamGame {
+export default class TeamGame {
   @PrimaryGeneratedColumn()
   id: number
 

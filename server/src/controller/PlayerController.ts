@@ -1,9 +1,13 @@
-import { getRepository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { Request } from 'express'
-import { Player } from '../entity/Player'
+import Player from '../entity/Player'
 
-export class PlayerController {
-  private playerRepository = getRepository(Player)
+export default class PlayerController {
+  private playerRepository: Repository<Player>
+
+  constructor(playerRepository: Repository<Player>) {
+    this.playerRepository = playerRepository
+  }
 
   async all(): Promise<Player[]> {
     return this.playerRepository.find()

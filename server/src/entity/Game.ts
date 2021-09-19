@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm'
-import { TeamGame } from './TeamGame'
+import TeamGame from './TeamGame'
 
 @Entity({ name: 'game' })
-export class Game {
+export default class Game {
   @PrimaryGeneratedColumn()
   id: number
 
