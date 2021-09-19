@@ -17,17 +17,33 @@ export class TeamController {
     return this.teamRepository.save(request.body)
   }
 
-  async games(request: Request): Promise<Team | undefined> {
-    const query = this.teamRepository
+  createAllGamesQuery(): any {
+    return this.teamRepository
       .createQueryBuilder('team')
       .leftJoinAndSelect('team.teamGames', 'teamGame')
       .leftJoinAndSelect('teamGame.game', 'game')
       .leftJoinAndSelect('game.teamGames', 'teamGames')
       .leftJoinAndSelect('teamGames.team', 'opposingTeam')
-      .where(
-        'team.id = :id AND teamGames.game_id = game.id AND teamGames.team_id != team.id',
-        { id: request.params.id },
-      )
-    return query.getOne()
+  }
+
+  mapGamesForOne({ name, teamGames }: any): any {
+    return {
+      name,
+      teamGames: teamGames.map(
+        ({ score, game }: { score: number; game: any }) => ({
+          score,
+          opposingScore: game.teamGames[0].team.name,
+          opposingTeam: game.teamGames[0].score,
+        }),
+      ),
+    }
+  }
+
+  async gamesForOne(request: Request): Promise<any | undefined> {
+    const query = this.createAllGamesQuery().where(
+      'team.id = :id AND teamGames.game_id = game.id AND teamGames.team_id != team.id',
+      { id: request.params.id },
+    )
+    return this.mapGamesForOne(await query.getOne())
   }
 }
