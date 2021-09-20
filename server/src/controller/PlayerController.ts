@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm'
 import { Request } from 'express'
 import Player from '../entity/Player'
-export const PG_UNIQUE_CONSTRAINT_VIOLATION = '23505'
+import { PG_UNIQUE_CONSTRAINT_VIOLATION } from '../constants'
 
 export default class PlayerController {
   private playerRepository: Repository<Player>
