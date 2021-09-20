@@ -34,10 +34,7 @@ createConnection()
 
     const controllers = {
       PlayerController: new PlayerController(repostiories.PlayerRepository),
-      TeamController: new TeamController(
-        repostiories.TeamRepository,
-        repostiories.PlayerRepository,
-      ),
+      TeamController: new TeamController(repostiories.TeamRepository),
       TeamAndPlayerController: new TeamAndPlayerController(connection.manager),
     }
 

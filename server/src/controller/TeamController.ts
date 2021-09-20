@@ -1,19 +1,13 @@
-import { In, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { Request } from 'express'
 import Team from '../entity/Team'
 import { PG_UNIQUE_CONSTRAINT_VIOLATION } from '../constants'
-import { Player } from '../entity'
 
 export default class TeamController {
   private teamRepository: Repository<Team>
-  private playerRepository: Repository<Player>
 
-  constructor(
-    teamRepository: Repository<Team>,
-    playerRepository: Repository<Player>,
-  ) {
+  constructor(teamRepository: Repository<Team>) {
     this.teamRepository = teamRepository
-    this.playerRepository = playerRepository
   }
 
   async all(): Promise<Team[]> {
@@ -29,11 +23,7 @@ export default class TeamController {
       console.log(request.body)
       const team = this.teamRepository.create({
         name: request.body.name,
-        players: await this.playerRepository.find({
-          where: {
-            id: In(request.body.players),
-          },
-        }),
+        players: request.body.players.map((id: number) => ({ id })),
       })
       console.log(team)
       return await this.teamRepository.save(team)
