@@ -4,11 +4,12 @@ import express from 'express'
 import { Request, Response, Express, NextFunction } from 'express'
 import { Routes } from './routes'
 import cors from 'cors'
-import { Team, Player } from './entity'
+import { Team, Player, Game } from './entity'
 import {
   TeamController,
   PlayerController,
   TeamAndPlayerController,
+  GameController,
 } from './controller'
 
 const options: cors.CorsOptions = {
@@ -30,11 +31,13 @@ createConnection()
     const repostiories = {
       PlayerRepository: getRepository(Player),
       TeamRepository: getRepository(Team),
+      GameRepository: getRepository(Game),
     }
 
     const controllers = {
       PlayerController: new PlayerController(repostiories.PlayerRepository),
       TeamController: new TeamController(repostiories.TeamRepository),
+      GameController: new GameController(repostiories.GameRepository),
       TeamAndPlayerController: new TeamAndPlayerController(connection.manager),
     }
 

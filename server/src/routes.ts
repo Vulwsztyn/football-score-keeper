@@ -2,6 +2,7 @@ type Controller =
   | 'PlayerController'
   | 'TeamController'
   | 'TeamAndPlayerController'
+  | 'GameController'
 
 interface IRoute {
   method: 'get' | 'post' | 'put' | 'delete'
@@ -58,6 +59,12 @@ export const Routes: IRoute[] = [
     route: '/teams/:id/games',
     controller: 'TeamController',
     action: 'gamesForOne',
+  },
+  {
+    method: 'post',
+    route: '/games',
+    controller: 'GameController',
+    action: 'save',
   },
   {
     method: 'get',
