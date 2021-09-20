@@ -1,6 +1,7 @@
 import { Repository } from 'typeorm'
 import { Request } from 'express'
 import Player from '../entity/Player'
+export const PG_UNIQUE_CONSTRAINT_VIOLATION = '23505'
 
 export default class PlayerController {
   private playerRepository: Repository<Player>
@@ -21,8 +22,22 @@ export default class PlayerController {
       .getOne()
   }
 
-  async save(request: Request): Promise<void> {
-    return this.playerRepository.save(request.body)
+  async save(request: Request): Promise<Player | any> {
+    try {
+      return await this.playerRepository.save(request.body)
+    } catch (err) {
+      console.log(PG_UNIQUE_CONSTRAINT_VIOLATION)
+      if (err && (err as any).code === PG_UNIQUE_CONSTRAINT_VIOLATION) {
+        return {
+          error: {
+            error: err,
+            msg: 'Player with such name already exists',
+          },
+        }
+      } else {
+        throw err
+      }
+    }
   }
 
   createAllGamesQuery(): any {
