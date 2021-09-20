@@ -34,7 +34,10 @@ createConnection()
 
     const controllers = {
       PlayerController: new PlayerController(repostiories.PlayerRepository),
-      TeamController: new TeamController(repostiories.TeamRepository),
+      TeamController: new TeamController(
+        repostiories.TeamRepository,
+        repostiories.PlayerRepository,
+      ),
       TeamAndPlayerController: new TeamAndPlayerController(connection.manager),
     }
 
@@ -49,11 +52,16 @@ createConnection()
           const controller = controllers[route.controller]
           const result = (controller as any)[route.action](req, res, next)
           if (result instanceof Promise) {
-            result.then((result) =>
-              result !== null && result !== undefined
-                ? res.send(result)
-                : undefined,
-            )
+            result
+              .then((result) =>
+                result !== null && result !== undefined
+                  ? res.send(result)
+                  : undefined,
+              )
+              .catch((err) => {
+                console.error(err)
+                res.status(500).send(err)
+              })
           } else if (result !== null && result !== undefined) {
             res.json(result)
           }

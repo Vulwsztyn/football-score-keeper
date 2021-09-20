@@ -1,13 +1,19 @@
-import { Repository } from 'typeorm'
+import { In, Repository } from 'typeorm'
 import { Request } from 'express'
 import Team from '../entity/Team'
 import { PG_UNIQUE_CONSTRAINT_VIOLATION } from '../constants'
+import { Player } from '../entity'
 
 export default class TeamController {
   private teamRepository: Repository<Team>
+  private playerRepository: Repository<Player>
 
-  constructor(teamRepository: Repository<Team>) {
+  constructor(
+    teamRepository: Repository<Team>,
+    playerRepository: Repository<Player>,
+  ) {
     this.teamRepository = teamRepository
+    this.playerRepository = playerRepository
   }
 
   async all(): Promise<Team[]> {
@@ -20,11 +26,21 @@ export default class TeamController {
 
   async save(request: Request): Promise<Team | any> {
     try {
-      return await this.teamRepository.save(request.body)
+      console.log(request.body)
+      const team = this.teamRepository.create({
+        name: request.body.name,
+        players: await this.playerRepository.find({
+          where: {
+            id: In(request.body.players),
+          },
+        }),
+      })
+      console.log(team)
+      return await this.teamRepository.save(team)
     } catch (err) {
       if (err && (err as any).code === PG_UNIQUE_CONSTRAINT_VIOLATION) {
         return {
-          error: { error: err, msg: 'Player with such name already exists' },
+          error: { error: err, msg: 'Team with such name already exists' },
         }
       } else {
         throw err
