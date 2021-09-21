@@ -24,28 +24,28 @@ export default class TeamAndPlayerController {
     return this.entityManager.query(
       `
         with intermediate_result as (
-            with teams_and_players as (
-                select id, name, tp.team_id as team_id, false as is_team
-                from player
-                        left join team_player tp on player.id = tp.player_id
-                union all
-                select id, name, id as team_id, true as is_team
-                from team
-            )
-            select tap.id,
-                name,
-                is_team,
-                coalesce(sum(tg1.score), 0)                            as gf,
-                coalesce(sum(tg2.score), 0)                            as ga,
-                sum(case when tg1.score > tg2.score then 1 else 0 end) as wins,
-                sum(case when tg1.score < tg2.score then 1 else 0 end) as losses,
-                count(*)                                               as games_played
-            from teams_and_players tap
-                    left join team_game tg1 on tg1.team_id = tap.team_id
-                    left join team_game tg2 on tg2.game_id = tg1.game_id and tg2.team_id != tg1.team_id
-            group by tap.id, tap.name, tap.is_team
+          with teams_and_players as (
+            select id, name, tp.team_id as team_id, false as is_team
+            from player
+              left join team_player tp on player.id = tp.player_id
+            union all
+            select id, name, id as team_id, true as is_team
+            from team
+          )
+          select tap.id,
+            name,
+            is_team,
+            coalesce(sum(tg1.score), 0)                            as gf,
+            coalesce(sum(tg2.score), 0)                            as ga,
+            sum(case when tg1.score > tg2.score then 1 else 0 end) as wins,
+            sum(case when tg1.score < tg2.score then 1 else 0 end) as losses,
+            count(tg1.score)                                       as games_played
+          from teams_and_players tap
+            left join team_game tg1 on tg1.team_id = tap.team_id
+            left join team_game tg2 on tg2.game_id = tg1.game_id and tg2.team_id != tg1.team_id
+          group by tap.id, tap.name, tap.is_team
         )
-        select *, round(wins::decimal / games_played, 2) as win_ratio, gf - ga as gd
+        select *, round(wins::decimal / (case when games_played = 0 then 1 else games_played end), 2) as win_ratio, gf - ga as gd
         from intermediate_result
         order by win_ratio desc, gd desc
         `,
