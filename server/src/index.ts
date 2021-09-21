@@ -70,10 +70,10 @@ createConnection()
       )
     })
 
-    app.listen(8000)
+    app.listen(process.env.port)
 
     console.log(
-      'SUCCESS! - Express server has started on port 8000. Open http://localhost:8000/players to see results',
+      `SUCCESS! - Express server has started on port ${process.env.port}. Open http://localhost:${process.env.port}/players to see results`,
     )
   })
   .catch((error) => console.log(error))
