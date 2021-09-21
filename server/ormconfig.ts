@@ -9,9 +9,9 @@ export = {
   database: process.env.DB_NAME,
   synchronize: !process.env.PRODUCTION,
   logging: false,
-  entities: ['src/entity/**/*.ts'],
-  migrations: ['src/migration/**/*.ts'],
-  subscribers: ['src/subscriber/**/*.ts'],
+  entities: ['src/entity/**/*.{ts,js}'],
+  migrations: ['src/migration/**/*.{ts,js}'],
+  subscribers: ['src/subscriber/**/*.{ts,js}'],
   cli: {
     entitiesDir: 'src/entity',
     migrationsDir: 'src/migration',

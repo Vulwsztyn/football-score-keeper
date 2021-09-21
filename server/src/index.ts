@@ -11,6 +11,7 @@ import {
   TeamAndPlayerController,
   GameController,
 } from './controller'
+import path from 'path'
 
 const options: cors.CorsOptions = {
   allowedHeaders: [
@@ -69,11 +70,16 @@ createConnection()
         },
       )
     })
-
-    app.listen(process.env.port)
+    if(process.env.PRODUCTION) {
+      app.use(express.static(path.join(__dirname, 'front')))
+      app.get('/*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'front', 'index.html'))
+      })
+    }
+    app.listen(Number(process.env.PORT), '0.0.0.0')
 
     console.log(
-      `SUCCESS! - Express server has started on port ${process.env.port}. Open http://localhost:${process.env.port}/players to see results`,
+      `SUCCESS! - Express server has started on port ${process.env.PORT}. Open http://localhost:${process.env.PORT}/players to see results`,
     )
   })
   .catch((error) => console.log(error))
