@@ -73,7 +73,7 @@ createConnection()
     app.listen(8000)
 
     console.log(
-      'SUCCESS! - Express server has started on port 8000. Open http://localhost:8000/users to see results',
+      'SUCCESS! - Express server has started on port 8000. Open http://localhost:8000/players to see results',
     )
   })
   .catch((error) => console.log(error))

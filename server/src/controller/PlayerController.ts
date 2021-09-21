@@ -71,6 +71,7 @@ export default class PlayerController {
       'player.id = :id AND teamGames.game_id = game.id AND teamGames.team_id != team.id',
       { id: request.params.id },
     )
-    return PlayerController.mapGamesForOne(await query.getOne())
+    const data = await query.getOne()
+    return data ? PlayerController.mapGamesForOne(data) : this.one(request)
   }
 }
