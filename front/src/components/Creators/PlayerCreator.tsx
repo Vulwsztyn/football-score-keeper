@@ -1,7 +1,11 @@
 import * as React from 'react'
 import { Button, TextField, InputLabel, FormGroup } from '@mui/material'
 import myAxios from '../../utils/myAxios'
-export default function PlayerCreator() {
+export default function PlayerCreator({
+  fetchData,
+}: {
+  fetchData: () => Promise<any>
+}) {
   const [name, setName] = React.useState('')
   const handleChange = (event: any) => {
     setName(event.target.value)
@@ -9,6 +13,7 @@ export default function PlayerCreator() {
   const handleClick = async () => {
     const res = await myAxios.post('/players', { name })
     console.log(res)
+    fetchData()
   }
   return (
     <FormGroup>

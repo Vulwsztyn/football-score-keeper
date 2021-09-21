@@ -8,9 +8,14 @@ import {
   MenuItem,
 } from '@mui/material'
 import myAxios from '../../utils/myAxios'
-export default function TeamCreator() {
+export default function TeamCreator({
+  fetchData,
+  players,
+}: {
+  fetchData: () => Promise<any>
+  players: any[]
+}) {
   const [name, setName] = React.useState('')
-  const [players, setPlayers] = React.useState([])
   const [chosenPlayers, setChosenPlayers] = React.useState<number[]>([])
 
   const handleNameChange = (event: any) => {
@@ -27,16 +32,8 @@ export default function TeamCreator() {
     console.log({ name })
     const res = await myAxios.post('/teams', { name, players: chosenPlayers })
     console.log(res)
+    fetchData()
   }
-  const effect = async () => {
-    const res = await myAxios.get('/players')
-    if (res.status == 200) {
-      setPlayers(res.data)
-    }
-  }
-  React.useEffect(() => {
-    effect()
-  }, [])
   return (
     <FormGroup>
       <InputLabel htmlFor="player-creation-input">Team Name:</InputLabel>

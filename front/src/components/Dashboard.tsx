@@ -6,18 +6,8 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import axios from 'axios'
 
-export default function Dashboard() {
-  const [data, setData] = useState([])
-  async function fetchData() {
-    const res = await axios('http://localhost:8000/team_and_player_summary')
-    console.log(res.data)
-    setData(res.data)
-  }
-  useEffect(() => {
-    fetchData()
-  }, [])
+export default function Dashboard({ data }: { data: any }) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">

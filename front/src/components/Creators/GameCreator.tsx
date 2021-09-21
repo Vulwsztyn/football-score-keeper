@@ -1,8 +1,13 @@
 import * as React from 'react'
 import { Button, FormGroup, Select, MenuItem, TextField } from '@mui/material'
 import myAxios from '../../utils/myAxios'
-export default function GameCreator() {
-  const [teams, setTeams] = React.useState([])
+export default function GameCreator({
+  fetchData,
+  teams,
+}: {
+  fetchData: () => Promise<any>
+  teams: any[]
+}) {
   const [teamGames, setTeamGames] = React.useState<any[]>([
     { score: 0 },
     { score: 0 },
@@ -22,16 +27,9 @@ export default function GameCreator() {
   const handleClick = async () => {
     const res = await myAxios.post('/games', { teamGames })
     console.log(res)
+    fetchData()
   }
-  const effect = async () => {
-    const res = await myAxios.get('/teams')
-    if (res.status == 200) {
-      setTeams(res.data)
-    }
-  }
-  React.useEffect(() => {
-    effect()
-  }, [])
+
   return (
     <FormGroup>
       {[

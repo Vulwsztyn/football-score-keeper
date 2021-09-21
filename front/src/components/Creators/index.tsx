@@ -7,8 +7,32 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import PlayerCreator from './PlayerCreator'
 import TeamCreator from './TeamCreator'
 import GameCreator from './GameCreator'
+import myAxios from '../../utils/myAxios'
 
-export default function Creators() {
+export default function Creators({
+  fetchData,
+}: {
+  fetchData: () => Promise<any>
+}) {
+  const [players, setPlayers] = React.useState([])
+  const [teams, setTeams] = React.useState([])
+
+  const fetchPlayers = async () => {
+    const res = await myAxios.get('/players')
+    if (res.status == 200) {
+      setPlayers(res.data)
+    }
+  }
+  const fetchTeams = async () => {
+    const res = await myAxios.get('/teams')
+    if (res.status == 200) {
+      setTeams(res.data)
+    }
+  }
+  React.useEffect(() => {
+    fetchPlayers()
+    fetchTeams()
+  }, [])
   return (
     <div>
       <Accordion>
@@ -16,7 +40,12 @@ export default function Creators() {
           <Typography>Create player</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <PlayerCreator />
+          <PlayerCreator
+            fetchData={async () => {
+              fetchPlayers()
+              fetchData()
+            }}
+          />
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -24,15 +53,21 @@ export default function Creators() {
           <Typography>Create team</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <TeamCreator />
+          <TeamCreator
+            fetchData={async () => {
+              fetchTeams()
+              fetchData()
+            }}
+            players={players}
+          />
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={true}>
+      <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} id="panel1a-header">
           <Typography>Create game</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <GameCreator />
+          <GameCreator fetchData={fetchData} teams={teams} />
         </AccordionDetails>
       </Accordion>
     </div>
