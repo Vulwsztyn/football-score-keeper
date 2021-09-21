@@ -1,6 +1,7 @@
 import * as React from 'react'
 import Dashboard from './Dashboard'
 import Grid from '@mui/material/Grid'
+import Creators from './Creators'
 
 export default function Root() {
   return (
@@ -15,6 +16,9 @@ export default function Root() {
           bgcolor: 'background.paper',
         }}
       >
+        <Grid item xs={12} sx={{ maxWidth: 1000 }}>
+          <Creators />
+        </Grid>
         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
           <h4>Teams & Players</h4>
         </Grid>
