@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import PlayerCreator from './PlayerCreator'
 import TeamCreator from './TeamCreator'
+import GameCreator from './GameCreator'
 
 export default function Creators() {
   return (
@@ -18,12 +19,20 @@ export default function Creators() {
           <PlayerCreator />
         </AccordionDetails>
       </Accordion>
-      <Accordion expanded={true}>
+      <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} id="panel1a-header">
           <Typography>Create team</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <TeamCreator />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion expanded={true}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} id="panel1a-header">
+          <Typography>Create game</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <GameCreator />
         </AccordionDetails>
       </Accordion>
     </div>
