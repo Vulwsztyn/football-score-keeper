@@ -35,8 +35,8 @@ export default class TeamAndPlayerController {
             select tap.id,
                 name,
                 is_team,
-                sum(tg1.score)                                         as gf,
-                sum(tg2.score)                                         as ga,
+                coalesce(sum(tg1.score), 0)                            as gf,
+                coalesce(sum(tg2.score), 0)                            as ga,
                 sum(case when tg1.score > tg2.score then 1 else 0 end) as wins,
                 sum(case when tg1.score < tg2.score then 1 else 0 end) as losses,
                 count(*)                                               as games_played

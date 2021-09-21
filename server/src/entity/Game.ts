@@ -6,6 +6,8 @@ export default class Game {
   @PrimaryGeneratedColumn()
   id: number
 
-  @OneToMany(() => TeamGame, (teamGame: TeamGame) => teamGame.game)
+  @OneToMany(() => TeamGame, (teamGame: TeamGame) => teamGame.game, {
+    cascade: true,
+  })
   teamGames: TeamGame[]
 }
