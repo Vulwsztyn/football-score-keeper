@@ -44,6 +44,7 @@ createConnection()
     const app: Express = express()
     app.use(express.urlencoded({ extended: true }))
     app.use(cors(options))
+    app.use(express.json())
 
     Routes.forEach((route) => {
       app[route.method](
