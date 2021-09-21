@@ -16,6 +16,10 @@ export default function Creators({
 }) {
   const [players, setPlayers] = React.useState([])
   const [teams, setTeams] = React.useState([])
+  const [playerCreatorExpanded, setPlayerCreatorExpanded] =
+    React.useState(false)
+  const [teamCreatorExpanded, setTeamCreatorExpanded] = React.useState(false)
+  const [gameCreatorExpanded, setGameCreatorExpanded] = React.useState(false)
 
   const fetchPlayers = async () => {
     const res = await myAxios.get('/players')
@@ -35,8 +39,12 @@ export default function Creators({
   }, [])
   return (
     <div>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} id="panel1a-header">
+      <Accordion expanded={playerCreatorExpanded}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          id="player-header"
+          onClick={() => setPlayerCreatorExpanded(!playerCreatorExpanded)}
+        >
           <Typography>Create player</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -45,11 +53,16 @@ export default function Creators({
               fetchPlayers()
               fetchData()
             }}
+            setPlayerCreatorExpanded={setPlayerCreatorExpanded}
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} id="panel1a-header">
+      <Accordion expanded={teamCreatorExpanded}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          id="team-header"
+          onClick={() => setTeamCreatorExpanded(!teamCreatorExpanded)}
+        >
           <Typography>Create team</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -59,15 +72,24 @@ export default function Creators({
               fetchData()
             }}
             players={players}
+            setTeamCreatorExpanded={setTeamCreatorExpanded}
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} id="panel1a-header">
+      <Accordion expanded={gameCreatorExpanded}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          id="game-header"
+          onClick={() => setGameCreatorExpanded(!gameCreatorExpanded)}
+        >
           <Typography>Create game</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <GameCreator fetchData={fetchData} teams={teams} />
+          <GameCreator
+            fetchData={fetchData}
+            teams={teams}
+            setGameCreatorExpanded={setGameCreatorExpanded}
+          />
         </AccordionDetails>
       </Accordion>
     </div>

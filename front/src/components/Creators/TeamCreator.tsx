@@ -11,12 +11,15 @@ import myAxios from '../../utils/myAxios'
 export default function TeamCreator({
   fetchData,
   players,
+  setTeamCreatorExpanded,
 }: {
   fetchData: () => Promise<any>
   players: any[]
+  setTeamCreatorExpanded: (expanded: boolean) => void
 }) {
   const [name, setName] = React.useState('')
   const [chosenPlayers, setChosenPlayers] = React.useState<number[]>([])
+  const [error, setError] = React.useState('')
 
   const handleNameChange = (event: any) => {
     setName(event.target.value)
@@ -29,9 +32,12 @@ export default function TeamCreator({
     ])
   }
   const handleClick = async () => {
-    console.log({ name })
     const res = await myAxios.post('/teams', { name, players: chosenPlayers })
-    console.log(res)
+    if (!!res.data.error) {
+      setError(res.data.error.msg)
+    } else {
+      setTeamCreatorExpanded(false)
+    }
     fetchData()
   }
   return (
@@ -39,12 +45,14 @@ export default function TeamCreator({
       <InputLabel htmlFor="player-creation-input">Team Name:</InputLabel>
       <TextField
         required
+        error={!!error}
         id="team-creation-input"
         label="Required"
         placeholder="Team Name"
         margin="normal"
         value={name}
         onChange={handleNameChange}
+        helperText={error}
       />
       {[
         {
